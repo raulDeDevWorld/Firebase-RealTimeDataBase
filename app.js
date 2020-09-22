@@ -3,9 +3,28 @@ const firebaseConfig = {
   };
   // Initialize Firebase
   let app= firebase.initializeApp(firebaseConfig);
-  let db = app.database().ref('user')
+  let db = app.database().ref('primero')
   let form = document.getElementById('form')
   let box = document.getElementById('box')
+  
+  let button = document.getElementById('button')
+  let list = document.getElementById('list')
+
+
+  button.addEventListener('click', (e)=>{
+    e.preventDefault()
+    db.on('value', function(snapshot){
+      /*  let obj = snapshot.val()
+        for (item in obj){
+          console.log(obj[item].email)
+        }*/
+      snapshot.forEach(function(childSnapshot) {
+      //console.log(childSnapshot.val().email)
+          list.innerHTML += `<li>${childSnapshot.key}-${childSnapshot.child('mate').key}-${childSnapshot.child('mate/nota').val()}</li>`;
+      //console.log(childSnapshot.val())
+        });
+      });
+  })
 
   form.addEventListener('submit', (e)=>{
     e.preventDefault()
